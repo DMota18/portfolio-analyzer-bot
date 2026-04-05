@@ -1,6 +1,8 @@
 # Portfolio Analyzer Bot
 
-Telegram-based AI portfolio assistant. Claude Sonnet synthesizes data from multiple financial APIs into actionable intelligence delivered via Telegram.
+A Telegram bot that uses the Claude API to synthesize news, prices, and insights — delivered via automated daily briefings and Bloomberg-style commands — to track your entire portfolio across various brokerages.
+
+---
 
 ## Screenshots
 
@@ -10,18 +12,47 @@ Telegram-based AI portfolio assistant. Claude Sonnet synthesizes data from multi
   <img src="screenshots/fear-greed.png" alt="Fear & Greed Dashboard" width="300"/>
 </p>
 
-## Features
+---
 
-- **Portfolio tracking** — Live prices, daily P&L, and total returns for all positions
-- **Daily digest** — Automated portfolio summary with news and macro context
-- **Fear & Greed dashboard** — Stock and crypto sentiment indicators plus VIX
-- **Company news** — Headlines and AI-generated sentiment analysis per ticker
-- **Insider trades** — SEC Form 4 data with buy/sell signal interpretation
-- **Macro snapshot** — Fed Funds, 10Y Treasury, CPI from FRED
-- **Price alerts** — Set above/below price triggers for any ticker
+## What It Does
+
+- **Bloomberg-style commands** — Get a full picture of your portfolio on demand with commands like `/portfolio`, `/fear`, `/market`, and `/screen`
+- **AI-powered synthesis** — Claude API interprets price action and news across all your holdings to surface what actually matters
+- **Unified portfolio view** — All holdings across various brokerages broken down in one place
+- **Price alerts** — Set above/below triggers on any ticker so you can take action at the right moment
+- **AI-generated daily briefing** — An automated snapshot of your portfolio delivered every day, no input required
+
+---
+
+## Tech Stack
+
+| Tool | Role |
+|------|------|
+| **Python** | The engine that runs the entire program, sending commands to the APIs and routing responses back to Telegram |
+| **Claude API** | The brain — interprets all signals, synthesizes news and price action into actionable intelligence |
+| **Telegram Bot API** | The frontend — where commands are sent and insights are received |
+| **Financial Datasets API** | Fetches live stock prices and tracks holdings (primary source) |
+| **Yahoo Finance** | Gathers market news and financial data as a fallback and supplement |
+| **AWS EC2** | Cloud hosting platform keeping the bot running 24/7 |
+| **CoinGecko** | Crypto price data to cover gaps in Financial Datasets coverage |
+| **Finnhub** | Company news and insider trade data (SEC Form 4) |
+| **FRED** | Macroeconomic indicators — Fed Funds rate, 10Y Treasury, CPI |
+
+---
 
 ## Architecture
 
+**User-triggered flow:**
+```
+[Command] → [Python Bot] → [Financial Datasets / Yahoo Finance / CoinGecko] → [Claude API] → [Telegram]
+```
+
+**Automated flow:**
+```
+[Automated Trigger (daily briefing)] → [Python Bot] → [Financial Datasets / Yahoo Finance / CoinGecko] → [Claude API] → [Telegram]
+```
+
+**Internal module structure:**
 ```
 bot.py → agent_loop.py → tools.py → External APIs
            ↕                ↕
@@ -32,14 +63,17 @@ bot.py → agent_loop.py → tools.py → External APIs
 
 - **bot.py** — Telegram command handlers, scheduled jobs, persistence
 - **agent_loop.py** — Agentic loop: Claude API calls, tool_choice enforcement, circuit breaker
-- **tools.py** — Tool definitions + provider implementations (Financial Datasets, Yahoo, Finnhub, CoinGecko, FRED)
+- **tools.py** — Tool definitions and provider implementations
 - **hooks.py** — Pre-execution safety gates (position size, irreversible actions)
 - **portfolio_facts.py** — Persistent per-ticker state (cost basis, shares, digest history)
 - **provider_stats.py** — API reliability tracking per provider per day
 - **config.py** — Secrets, constants, system prompt, workflow config
-- **public_api.py** — Public.com two-step auth flow
+
+---
 
 ## Setup
+
+**Requirements:** Python 3.9+, AWS account, Telegram account
 
 1. Clone the repo
 2. Copy `.env.example` to `.env` and fill in your API keys
@@ -52,6 +86,8 @@ bot.py → agent_loop.py → tools.py → External APIs
    python portfolio_bot/run.py
    ```
 
+---
+
 ## Data Sources
 
 | Provider | Data |
@@ -61,4 +97,11 @@ bot.py → agent_loop.py → tools.py → External APIs
 | Finnhub | Company news, insider trades |
 | CoinGecko | Crypto prices |
 | FRED | Macroeconomic indicators |
-| Public.com | Portfolio holdings sync |
+
+---
+
+## What I Learned / Future Plans
+
+Calling APIs efficiently and using real financial data to generate meaningful output was one of the core lessons from building this. Setting up a full frontend and backend system tailored to my exact needs proved I could take a product from idea to production independently.
+
+The goal going forward is to go deeper with the data — to the point where this bot can completely replace any paid financial app.
