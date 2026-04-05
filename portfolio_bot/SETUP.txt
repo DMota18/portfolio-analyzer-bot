@@ -1,0 +1,49 @@
+Portfolio Intelligence Bot - Setup Guide
+=========================================
+
+QUICK START (5 minutes)
+
+1. Install Python 3.10+ from https://python.org/downloads
+
+2. Copy the portfolio_bot folder to your computer
+
+3. Install dependencies:
+   cd portfolio_bot
+   pip install -r requirements.txt
+
+4. Run the bot:
+   python bot.py
+
+5. Test in Telegram (@mrc71_portfolio_bot):
+   /start - Welcome message
+   /portfolio - Full portfolio with live prices
+   /price BTC - Bitcoin price
+   /news NVDA - NVIDIA headlines
+   /alert BTC above 70000 - Set alert
+
+COMMANDS
+--------
+/portfolio    Full portfolio snapshot with live prices
+/price TICKER Current price (e.g. /price NVDA)
+/alert        Set alert (e.g. /alert BTC above 70000)
+/alerts       View active alerts
+/news TICKER  Latest headlines (e.g. /news PLTR)
+/earnings     Upcoming earnings for your stocks
+/add          Add position (e.g. /add AAPL 10)
+/remove       Remove position (e.g. /remove AAPL)
+/holdings     List tracked positions
+/help         Show all commands
+
+AUTOMATIC FEATURES
+------------------
+- Price alerts checked every 3 minutes
+- Evening summary at 5:00 PM ET daily
+
+OPTIONAL: FINANCIAL DATASETS API
+---------------------------------
+Get a free key at https://financialdatasets.ai
+Run with: FINANCIAL_DATASETS_API_KEY=your_key python bot.py
+
+OPTIONAL: RUN 24/7
+-------------------
+Railway.app (free) or DigitalOcean ($5/mo)

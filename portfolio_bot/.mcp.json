@@ -1,0 +1,74 @@
+{
+  "_comment": [
+    "MCP Configuration — Portfolio Intelligence Agent",
+    "",
+    "COMMUNITY vs CUSTOM MCP SERVERS:",
+    "  - FRED: Community MCP server exists (mcp-server-fred). Could replace custom code.",
+    "  - CoinGecko: Community server exists. Free tier compatible. Could replace custom code.",
+    "  - Financial Datasets: NO community server. Requires trailing slashes on all URLs",
+    "    which breaks standard OpenAPI-based MCP servers. MUST be custom.",
+    "  - Finnhub: Community server exists BUT free tier rate limits (60/min) need custom",
+    "    handling. Our wrapper adds rate-limit awareness. Recommend keeping custom.",
+    "  - Yahoo Finance: No auth needed, scraping-style API. Custom wrapper preferred",
+    "    for reliability (handles User-Agent rotation, response parsing).",
+    "",
+    "RECOMMENDATION: Keep all 5 tools as custom implementations for now.",
+    "The trailing slash requirement on Financial Datasets and the structured error",
+    "responses we need across all tools mean community servers would need wrappers anyway.",
+    "Revisit when MCP server ecosystem matures with better error standardization."
+  ],
+  "mcpServers": {
+    "portfolio-tools": {
+      "command": "python",
+      "args": ["mcp_server.py"],
+      "env": {
+        "FINNHUB_KEY": "${FINNHUB_KEY}",
+        "FRED_API_KEY": "${FRED_API_KEY}",
+        "FIN_DATASETS_KEY": "${FIN_DATASETS_KEY}",
+        "SEC_EDGAR_USER_AGENT": "${SEC_EDGAR_USER_AGENT}"
+      },
+      "tools": [
+        "get_stock_quote",
+        "get_crypto_data",
+        "get_company_news",
+        "get_insider_trades",
+        "get_macro_data"
+      ]
+    }
+  },
+  "credentials": {
+    "_note": "All credentials via environment variables. Never hardcode.",
+    "financial_datasets": {
+      "env_var": "FIN_DATASETS_KEY",
+      "docs": "https://financialdatasets.ai",
+      "tier": "free",
+      "rate_limit": "Varies by endpoint",
+      "quirks": ["TRAILING SLASH REQUIRED on all endpoint URLs"]
+    },
+    "finnhub": {
+      "env_var": "FINNHUB_KEY",
+      "docs": "https://finnhub.io/docs/api",
+      "tier": "free",
+      "rate_limit": "60 calls/minute"
+    },
+    "coingecko": {
+      "env_var": "none — free tier requires no key",
+      "docs": "https://www.coingecko.com/en/api",
+      "tier": "free",
+      "rate_limit": "~30 calls/minute"
+    },
+    "fred": {
+      "env_var": "FRED_API_KEY",
+      "docs": "https://fred.stlouisfed.org/docs/api/api_key.html",
+      "tier": "free",
+      "rate_limit": "120 calls/minute"
+    },
+    "yahoo_finance": {
+      "env_var": "none — no auth required",
+      "docs": "Unofficial API, no official docs",
+      "tier": "free",
+      "rate_limit": "Undocumented, use conservatively",
+      "quirks": ["Requires User-Agent header", "May block aggressive scraping"]
+    }
+  }
+}

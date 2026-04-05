@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"import tools; print\\(f''Tools defined: {len\\(tools.TOOL_DEFINITIONS\\)}''\\); print\\([t[\"\"name\"\"] for t in tools.TOOL_DEFINITIONS]\\)\")",
+      "Bash(python -c \"import bot; print\\(''bot.py imports clean''\\)\")",
+      "Bash(python -c \":*)",
+      "Bash(echo \"exit: $?\")"
+    ]
+  }
+}
