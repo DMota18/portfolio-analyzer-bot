@@ -43,7 +43,7 @@ if [ ! -f "$BOT_DIR/.env" ]; then
 # Portfolio Bot Environment Variables
 # Fill in your keys below
 
-BOT_TOKEN=8709993960:AAFbzoVv6n-MuYjkszMGpWTqEH0h07RspZU
+BOT_TOKEN=$TELEGRAM_BOT_TOKEN
 CHAT_ID=940058001
 ANTHROPIC_API_KEY=your-anthropic-key-here
 FINANCIAL_DATASETS_API_KEY=your-financial-datasets-key-here
